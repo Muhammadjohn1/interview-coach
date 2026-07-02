@@ -1,7 +1,7 @@
 {
-  "name": "interview.coach",
-  "short_name": "Interview Coach",
-  "description": "Talk to an AI interviewer. Get scored feedback. Land the job.",
+  "name": "AliCoach",
+  "short_name": "AliCoach",
+  "description": "AI-powered voice interview coaching for any role. Practice with 6 AI interviewers, get scored feedback, and personalize sessions with your resume.",
   "start_url": "/interview-app.html",
   "display": "standalone",
   "background_color": "#06080f",
