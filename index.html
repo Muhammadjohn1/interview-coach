@@ -684,6 +684,28 @@ var EL_VOICES = {
   casey:  'MF3mGyEYCl7XYWbV9V6O'  // Elli - clear female
 };
 
+// iOS Audio unlock - must be called on first user gesture
+var audioUnlocked = false;
+function unlockAudio(){
+  if(audioUnlocked) return;
+  audioUnlocked = true;
+  // Play a silent sound to unlock iOS audio
+  var ctx;
+  try {
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    var buf = ctx.createBuffer(1,1,22050);
+    var src = ctx.createBufferSource();
+    src.buffer = buf;
+    src.connect(ctx.destination);
+    src.start(0);
+    // Also create and play a silent HTML5 audio element
+    var a = new Audio();
+    a.src = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAA' +
+      'EAAQARBwAAESsAAAIAAgAZGF0YQQAAAAAAA==';
+    a.play().catch(function(){});
+  } catch(e){}
+}
+
 function speakAs(id, text, cb){
   if(muted){ if(cb)cb(); return; }
   var elKey = localStorage.getItem('el_key') || '';
@@ -729,7 +751,13 @@ function speakElevenLabs(id, text, key, cb){
     audio.playbackRate = iv ? iv.rate : 1.0;
     audio.onended = function(){ speaking=false; updStatus(); URL.revokeObjectURL(url); if(cb)cb(); };
     audio.onerror = function(){ speaking=false; updStatus(); speakBrowser(id,text,cb); };
-    audio.play().catch(function(){ speaking=false; updStatus(); speakBrowser(id,text,cb); });
+    // iOS requires play() to be called and handled carefully
+    var playPromise = audio.play();
+    if(playPromise !== undefined){
+      playPromise.catch(function(){
+        speaking=false; updStatus(); speakBrowser(id,text,cb);
+      });
+    }
   })
   .catch(function(){
     // Fallback to browser TTS if ElevenLabs fails
@@ -1174,6 +1202,7 @@ function getPersonalizedFirstQ(iv,profile,jd){
 // ======================================
 function startInterview(){
   if(!selId)return;
+  unlockAudio(); // unlock iOS audio on button tap
   curIV=IVS.find(function(x){return x.id===selId;});
   hist=[]; lastQ=''; sessionScores=[]; sessionLog=[];
   goToScreen('scr-chat');
@@ -1400,6 +1429,7 @@ function setThinking(v){
 var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 function micTap(e){
   e.preventDefault(); e.stopPropagation();
+  unlockAudio(); // unlock iOS audio on first tap
   if(thinking) return;
   if(recOn){ stopRec(); return; }
   stopSpeak();
