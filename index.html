@@ -689,27 +689,29 @@ var audioUnlocked = false;
 function unlockAudio(){
   if(audioUnlocked) return;
   audioUnlocked = true;
-  // Play a silent sound to unlock iOS audio
-  var ctx;
   try {
-    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
     var buf = ctx.createBuffer(1,1,22050);
     var src = ctx.createBufferSource();
     src.buffer = buf;
     src.connect(ctx.destination);
     src.start(0);
-    // Also create and play a silent HTML5 audio element
-    var a = new Audio();
-    a.src = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAA' +
-      'EAAQARBwAAESsAAAIAAgAZGF0YQQAAAAAAA==';
-    a.play().catch(function(){});
   } catch(e){}
+  // Also unlock speechSynthesis on iOS
+  if(window.speechSynthesis){
+    var u = new SpeechSynthesisUtterance(' ');
+    u.volume = 0;
+    window.speechSynthesis.speak(u);
+  }
 }
 
 function speakAs(id, text, cb){
   if(muted){ if(cb)cb(); return; }
+  // Always use browser TTS first - it works reliably on iOS
+  // ElevenLabs is only used if user specifically enabled it
   var elKey = localStorage.getItem('el_key') || '';
-  if(elKey){
+  var useEL = localStorage.getItem('use_el') === 'true';
+  if(elKey && useEL){
     speakElevenLabs(id, text, elKey, cb);
   } else {
     speakBrowser(id, text, cb);
@@ -719,50 +721,34 @@ function speakAs(id, text, cb){
 function speakElevenLabs(id, text, key, cb){
   var voiceId = EL_VOICES[id] || EL_VOICES.alex;
   var iv = IVS.find(function(x){ return x.id===id; });
-  // Stop any current audio
   if(window._elAudio){ try{ window._elAudio.pause(); }catch(e){} }
   speaking = true; updStatus();
-  fetch('https://api.elevenlabs.io/v1/text-to-speech/'+voiceId+'/stream', {
+  fetch('https://api.elevenlabs.io/v1/text-to-speech/'+voiceId, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+    headers:{
+      'Content-Type':'application/json',
       'xi-api-key': key
     },
     body: JSON.stringify({
       text: text,
       model_id: 'eleven_turbo_v2',
-      voice_settings: {
-        stability: 0.45,
-        similarity_boost: 0.82,
-        style: 0.35,
-        use_speaker_boost: true
-      }
+      voice_settings:{stability:0.5,similarity_boost:0.8}
     })
   })
   .then(function(res){
-    if(!res.ok) throw new Error('EL error '+res.status);
+    if(!res.ok) throw new Error('EL '+res.status);
     return res.blob();
   })
   .then(function(blob){
     var url = URL.createObjectURL(blob);
     var audio = new Audio(url);
     window._elAudio = audio;
-    // Adjust playback speed per interviewer personality
-    audio.playbackRate = iv ? iv.rate : 1.0;
     audio.onended = function(){ speaking=false; updStatus(); URL.revokeObjectURL(url); if(cb)cb(); };
     audio.onerror = function(){ speaking=false; updStatus(); speakBrowser(id,text,cb); };
-    // iOS requires play() to be called and handled carefully
-    var playPromise = audio.play();
-    if(playPromise !== undefined){
-      playPromise.catch(function(){
-        speaking=false; updStatus(); speakBrowser(id,text,cb);
-      });
-    }
+    var p = audio.play();
+    if(p) p.catch(function(){ speaking=false; updStatus(); speakBrowser(id,text,cb); });
   })
-  .catch(function(){
-    // Fallback to browser TTS if ElevenLabs fails
-    speakBrowser(id, text, cb);
-  });
+  .catch(function(){ speakBrowser(id, text, cb); });
 }
 
 function speakBrowser(id, text, cb){
@@ -1202,7 +1188,15 @@ function getPersonalizedFirstQ(iv,profile,jd){
 // ======================================
 function startInterview(){
   if(!selId)return;
-  unlockAudio(); // unlock iOS audio on button tap
+  unlockAudio();
+  // Speak immediately on tap - this is the ONLY way iOS allows audio
+  // Must happen synchronously within the tap handler
+  if(window.speechSynthesis){
+    window.speechSynthesis.cancel();
+    var welcome = new SpeechSynthesisUtterance('Welcome to AliCoach. Starting your interview now.');
+    welcome.volume = 0.01; // nearly silent - just unlocks iOS audio
+    window.speechSynthesis.speak(welcome);
+  }
   curIV=IVS.find(function(x){return x.id===selId;});
   hist=[]; lastQ=''; sessionScores=[]; sessionLog=[];
   goToScreen('scr-chat');
@@ -1429,7 +1423,14 @@ function setThinking(v){
 var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 function micTap(e){
   e.preventDefault(); e.stopPropagation();
-  unlockAudio(); // unlock iOS audio on first tap
+  unlockAudio();
+  // Pre-warm speechSynthesis on iOS - must be in tap handler
+  if(window.speechSynthesis && !recOn){
+    var warm = new SpeechSynthesisUtterance(' ');
+    warm.volume = 0;
+    window.speechSynthesis.speak(warm);
+    window.speechSynthesis.cancel();
+  }
   if(thinking) return;
   if(recOn){ stopRec(); return; }
   stopSpeak();
