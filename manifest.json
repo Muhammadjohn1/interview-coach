@@ -2,14 +2,14 @@
   "name": "AliCoach",
   "short_name": "AliCoach",
   "description": "AI-powered voice interview coaching for any role. Practice with 6 AI interviewers, get scored feedback, and personalize sessions with your resume.",
-  "start_url": "/interview-app.html",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#06080f",
   "theme_color": "#06080f",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='100' fill='%2306080f'/%3E%3Crect x='205' y='68' width='102' height='188' rx='51' fill='%230ec4a0'/%3E%3Cpath d='M114 222a142 142 0 0 0 284 0' stroke='%230ec4a0' stroke-width='22' stroke-linecap='round' fill='none'/%3E%3Cline x1='256' y1='364' x2='256' y2='432' stroke='%230ec4a0' stroke-width='22' stroke-linecap='round'/%3E%3Cline x1='182' y1='432' x2='330' y2='432' stroke='%230ec4a0' stroke-width='22' stroke-linecap='round'/%3E%3C/svg%3E",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='100' fill='%2306080f'/%3E%3Ccircle cx='256' cy='224' r='148' fill='%230c0f1c' stroke='%231e2840' stroke-width='2'/%3E%3Crect x='114' y='200' width='22' height='52' rx='11' fill='%230ec4a0' opacity='0.5'/%3E%3Crect x='150' y='178' width='22' height='96' rx='11' fill='%230ec4a0' opacity='0.65'/%3E%3Crect x='188' y='154' width='22' height='140' rx='11' fill='%230ec4a0' opacity='0.8'/%3E%3Crect x='226' y='130' width='28' height='190' rx='14' fill='%230ec4a0'/%3E%3Crect x='258' y='154' width='22' height='140' rx='11' fill='%230ec4a0' opacity='0.8'/%3E%3Crect x='296' y='178' width='22' height='96' rx='11' fill='%230ec4a0' opacity='0.65'/%3E%3Crect x='334' y='200' width='22' height='52' rx='11' fill='%230ec4a0' opacity='0.5'/%3E%3Ccircle cx='256' cy='224' r='58' fill='%2306080f' stroke='%230ec4a0' stroke-width='3'/%3E%3Crect x='232' y='192' width='48' height='72' rx='24' fill='%230ec4a0'/%3E%3Cpath d='M218 228 Q218 270 256 270 Q294 270 294 228' fill='none' stroke='%230ec4a0' stroke-width='10' stroke-linecap='round'/%3E%3Cline x1='256' y1='270' x2='256' y2='294' stroke='%230ec4a0' stroke-width='10' stroke-linecap='round'/%3E%3C/svg%3E",
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
