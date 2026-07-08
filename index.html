@@ -460,7 +460,7 @@ The more detail you provide, the more personalized your interviews become."></te
           <div style="font-size:16px;margin-bottom:5px">&#127331;</div>
           <div style="font-size:13px;font-weight:700;color:#fff">Beginner</div>
           <div style="font-size:10px;color:#7a8ab0;margin-top:2px">0-2 years</div>
-          <div style="font-size:10px;color:#3d4f72;margin-top:4px;line-height:1.4">Basic concepts, definitions, simple scenarios</div>
+          <div style="font-size:10px;color:#3d4f72;margin-top:4px;line-height:1.4">What is X? Explain the difference between A and B. Entry-level definitions only.</div>
         </button>
 
         <button class="level-btn" id="lvl-intermediate" onclick="setLevel('intermediate')"
@@ -468,7 +468,7 @@ The more detail you provide, the more personalized your interviews become."></te
           <div style="font-size:16px;margin-bottom:5px">&#127332;</div>
           <div style="font-size:13px;font-weight:700;color:#fff">Intermediate</div>
           <div style="font-size:10px;color:#7a8ab0;margin-top:2px">3-5 years</div>
-          <div style="font-size:10px;color:#3d4f72;margin-top:4px;line-height:1.4">Real scenarios, tools, processes, trade-offs</div>
+          <div style="font-size:10px;color:#3d4f72;margin-top:4px;line-height:1.4">How did you do X? Walk me through Y. Real tools, SQL, API testing, automation.</div>
         </button>
 
         <button class="level-btn" id="lvl-advanced" onclick="setLevel('advanced')"
@@ -476,7 +476,7 @@ The more detail you provide, the more personalized your interviews become."></te
           <div style="font-size:16px;margin-bottom:5px">&#127333;</div>
           <div style="font-size:13px;font-weight:700;color:#fff">Advanced</div>
           <div style="font-size:10px;color:#7a8ab0;margin-top:2px">6-9 years</div>
-          <div style="font-size:10px;color:#3d4f72;margin-top:4px;line-height:1.4">Architecture, leadership, complex edge cases</div>
+          <div style="font-size:10px;color:#3d4f72;margin-top:4px;line-height:1.4">Design X from scratch. How did you reduce Y by Z%? Senior engineer decisions.</div>
         </button>
 
         <button class="level-btn" id="lvl-pro" onclick="setLevel('pro')"
@@ -484,7 +484,7 @@ The more detail you provide, the more personalized your interviews become."></te
           <div style="font-size:16px;margin-bottom:5px">&#127894;</div>
           <div style="font-size:13px;font-weight:700;color:#fff">Pro</div>
           <div style="font-size:10px;color:#7a8ab0;margin-top:2px">10+ years</div>
-          <div style="font-size:10px;color:#3d4f72;margin-top:4px;line-height:1.4">Strategy, team leadership, business impact</div>
+          <div style="font-size:10px;color:#3d4f72;margin-top:4px;line-height:1.4">ROI of quality. Org strategy. Build vs buy. $500k budget allocation. Executive level.</div>
         </button>
 
       </div>
@@ -1443,19 +1443,75 @@ function refreshSetupBanner(){
 var LEVEL_CONFIG = {
   beginner:{
     color:'#34d399', label:'Beginner', years:'0-2 years',
-    instruction:'Ask BEGINNER level questions only. Use simple definitions and basic concepts. Avoid jargon. Questions should be answerable by someone with 0-2 years experience. Examples: What is a test case? What is the difference between smoke and regression testing? What is a bug life cycle?'
+    instruction:'DIFFICULTY: BEGINNER (0-2 years experience). STRICT RULES:\n'+
+      '1. Ask ONLY basic definition questions. Never ask about architecture, design patterns, or leadership.\n'+
+      '2. Use simple plain English. No technical jargon without explaining it first.\n'+
+      '3. One short simple question at a time. Max 1 sentence per question.\n'+
+      '4. Accept partial answers. Be very encouraging and patient.\n'+
+      '5. EXAMPLE questions at this level:\n'+
+      '   - What is the difference between a bug and a feature request?\n'+
+      '   - Can you explain what smoke testing means?\n'+
+      '   - What do you do when you find a bug?\n'+
+      '   - What is a test case and what goes inside it?\n'+
+      '   - What is the difference between manual and automated testing?\n'+
+      '   - What tools have you used for bug tracking?\n'+
+      '6. NEVER ask about: system design, CI/CD pipelines, test frameworks architecture, FIX protocol details, advanced SQL, leadership, metrics, or strategy.\n'+
+      '7. If candidate gives a great answer, ask a slightly deeper follow-up but STAY at beginner level.\n'+
+      '8. Tone: warm, encouraging, patient like a mentor teaching a junior.'
   },
   intermediate:{
     color:'#3b9eff', label:'Intermediate', years:'3-5 years',
-    instruction:'Ask INTERMEDIATE level questions. Focus on real scenarios, tools, frameworks, and processes. Expect knowledge of automation, SQL, API testing, and test design patterns. Examples: How do you handle flaky tests? Walk me through your API testing approach. How do you prioritize test cases?'
+    instruction:'DIFFICULTY: INTERMEDIATE (3-5 years experience). STRICT RULES:\n'+
+      '1. Ask scenario-based questions that require real hands-on experience to answer well.\n'+
+      '2. Expect knowledge of: automation frameworks, SQL queries, API testing, CI/CD basics, test planning.\n'+
+      '3. Ask about HOW they did things, not just WHAT things are.\n'+
+      '4. Probe for specifics: which tools, which approach, what was the outcome.\n'+
+      '5. EXAMPLE questions at this level:\n'+
+      '   - Walk me through how you would test a REST API end to end.\n'+
+      '   - How do you handle flaky tests in your automation suite?\n'+
+      '   - Write a SQL query to find duplicate records in a transactions table.\n'+
+      '   - How do you decide what to automate vs what to test manually?\n'+
+      '   - Describe a bug you found that was hard to reproduce. How did you approach it?\n'+
+      '   - How do you integrate your tests into a CI/CD pipeline?\n'+
+      '6. NEVER ask about: org-level strategy, team hiring, architecture decisions from scratch, executive stakeholder management.\n'+
+      '7. NEVER ask entry-level definitions like "what is a test case" or "what is regression testing".\n'+
+      '8. Tone: professional, direct, curious. Probe weak answers with one follow-up.'
   },
   advanced:{
     color:'#f5a623', label:'Advanced', years:'6-9 years',
-    instruction:'Ask ADVANCED level questions. Focus on architecture, technical leadership, complex edge cases, and system design. Expect deep knowledge of frameworks, CI/CD, test strategy, and mentoring. Examples: How would you design a test framework from scratch? How do you measure test effectiveness? How do you influence quality culture?'
+    instruction:'DIFFICULTY: ADVANCED (6-9 years experience). STRICT RULES:\n'+
+      '1. Ask complex technical and leadership questions. This person is a senior engineer.\n'+
+      '2. Expect deep expertise: framework design, test strategy, mentoring, system-level thinking.\n'+
+      '3. Ask about decisions they made, tradeoffs they evaluated, impact they drove.\n'+
+      '4. Challenge vague answers. Ask "why did you choose that approach over X?"\n'+
+      '5. EXAMPLE questions at this level:\n'+
+      '   - How would you design a test automation framework for a microservices trading platform from scratch?\n'+
+      '   - Walk me through how you reduced false positives in your regression suite by more than 40 percent.\n'+
+      '   - How do you balance test coverage with release velocity when business pressure is high?\n'+
+      '   - Describe how you built a test strategy for a system with no existing test coverage.\n'+
+      '   - How do you mentor junior QA engineers and what specific techniques do you use?\n'+
+      '   - How do you measure and report on test effectiveness to engineering leadership?\n'+
+      '6. NEVER ask basic questions like "what is API testing" or "how do you write a test case".\n'+
+      '7. If resume shows FIX protocol experience, ask deep FIX questions with specific tag numbers.\n'+
+      '8. Tone: senior peer to peer. Expect precise technical answers with real examples and metrics.'
   },
   pro:{
     color:'#a78bfa', label:'Pro / Principal', years:'10+ years',
-    instruction:'Ask PRO / PRINCIPAL level questions. Focus on organizational strategy, business impact, cross-team influence, technology decisions, and executive communication. Questions should challenge thinking about ROI of testing, build vs buy decisions, org-level quality strategy, and hiring.'
+    instruction:'DIFFICULTY: PRO / PRINCIPAL (10+ years experience). STRICT RULES:\n'+
+      '1. Ask ONLY strategic, organizational, and executive-level questions. This is a principal or staff engineer.\n'+
+      '2. Questions must challenge their thinking on business ROI, quality culture, technology bets, and influence without authority.\n'+
+      '3. Expect them to speak about: organizational impact, hiring strategy, build vs buy decisions, cross-team quality programs.\n'+
+      '4. Push back on every answer. Ask "how did you quantify that?" or "what would you do differently now?"\n'+
+      '5. EXAMPLE questions at this level:\n'+
+      '   - How have you changed the quality culture of an entire engineering organization? What metrics proved it worked?\n'+
+      '   - You have a $500k budget to improve quality across 8 product teams. How do you allocate it?\n'+
+      '   - When do you recommend buying a testing platform vs building one internally? Walk me through a real decision.\n'+
+      '   - How do you influence engineering leadership to invest in quality when there is pressure to ship faster?\n'+
+      '   - You inherited a team with 70 percent test flakiness and no confidence in releases. What is your 90-day plan?\n'+
+      '   - How do you evaluate whether to adopt AI testing tools vs investing in human expertise?\n'+
+      '6. NEVER ask technical how-to questions like "how do you write a selenium test" or "explain FIX protocol".\n'+
+      '7. NEVER ask beginner, intermediate, or advanced level questions. This person knows all of that.\n'+
+      '8. Tone: executive peer review. Be challenging, skeptical, demand specific business outcomes and numbers.'
   }
 };
 
@@ -1589,47 +1645,101 @@ function buildSystemPrompt(iv){
 }
 
 function buildOpener(iv){
-  var profile=JSON.parse(localStorage.getItem('ic_profile')||'null');
-  if(profile&&jobDesc){
-    return 'Hi'+( profile.name?(' '+profile.name.split(' ')[0]):'')+
-      '. I am '+iv.name+'. You are interviewing for the '+
-      (jobDesc.role||'role')+' position at '+(jobDesc.company||'our company')+
-      '. I can see you have '+( profile.yearsExp||'several years')+
-      ' of experience at '+(profile.currentCompany||'your current company')+
-      '. Let\'s dive right in. '+getPersonalizedFirstQ(iv,profile,jobDesc);
+  var profile = JSON.parse(localStorage.getItem('ic_profile')||'null');
+  var level = selectedLevel || 'intermediate';
+  var firstQ = getLevelFirstQ(iv, profile, jobDesc, level);
+  var intro = '';
+
+  if(profile && jobDesc){
+    intro = 'Hi'+(profile.name?' '+profile.name.split(' ')[0]:'')+
+      '. I am '+iv.name+'. You are here for the '+
+      (jobDesc.role||'role')+' position at '+(jobDesc.company||'our company')+'. ';
   } else if(profile){
-    return 'Hi'+( profile.name?(' '+profile.name.split(' ')[0]):'')+
-      '. I am '+iv.name+'. I can see you have '+( profile.yearsExp||'experience')+
-      ' at '+(profile.currentCompany||'your company')+
-      '. Let\'s start with something specific to your background. '+getPersonalizedFirstQ(iv,profile,null);
+    intro = 'Hi'+(profile.name?' '+profile.name.split(' ')[0]:'')+
+      '. I am '+iv.name+'. ';
   } else {
-    return iv.quote;
+    intro = 'Hi. I am '+iv.name+'. ';
   }
+
+  return intro + firstQ;
 }
 
-function getPersonalizedFirstQ(iv,profile,jd){
-  var company=profile.currentCompany||'';
-  var domain=profile.domain||'';
-  if(iv.id==='morgan'){
-    if(domain.toLowerCase().indexOf('fix')!==-1||domain.toLowerCase().indexOf('trading')!==-1)
-      return 'Walk me through the FIX message flow you test at '+company+'. What specific tags do you validate?';
-    return 'Walk me through the most technically complex system you have tested at '+company+'.';
+function getLevelFirstQ(iv, profile, jd, level){
+  var company = (profile&&profile.currentCompany) || 'your company';
+  var domain  = (profile&&profile.domain) || '';
+  var role    = (jd&&jd.role) || '';
+  var hasFix  = domain.toLowerCase().indexOf('fix')!==-1 || domain.toLowerCase().indexOf('trading')!==-1;
+
+  // BEGINNER - simple definitions, no jargon
+  if(level === 'beginner'){
+    var beginnerQ = {
+      alex:   'Can you tell me what your role as a tester involves day to day?',
+      morgan: 'What does the word "bug" mean to you and how do you report one?',
+      sam:    'What made you interested in a career in software quality?',
+      riley:  'What is the difference between testing and debugging?',
+      jordan: 'Tell me about yourself and why you want to work in QA.',
+      casey:  'What do you know about software testing and why does it matter?'
+    };
+    return beginnerQ[iv.id] || 'Can you tell me a little about yourself and your interest in testing?';
   }
-  if(iv.id==='riley'){
-    return 'What are the key FIX tag 35 message types? Clock is running.';
+
+  // INTERMEDIATE - scenario based, real tools
+  if(level === 'intermediate'){
+    var intermediateQ = {
+      alex:   'Walk me through how you approach testing a new feature from scratch.',
+      morgan: 'How do you decide what to automate versus what to test manually? Give me a real example.',
+      sam:    'Tell me about a time you improved the quality process on your team. What did you change and why?',
+      riley:  'How do you handle a test suite where 30 percent of tests are flaky? Go.',
+      jordan: 'Tell me about a time you disagreed with a developer about whether something was a bug. What happened?',
+      casey:  'Walk me through how you would test a payment processing API end to end.'
+    };
+    if(profile && company !== 'your company'){
+      var intermediatePersonalized = {
+        alex:   'Walk me through how you approach testing at '+company+'. What does a typical test cycle look like?',
+        morgan: 'Tell me about the most complex system you test at '+company+'. How do you approach it?',
+        sam:    'What quality improvements have you driven at '+company+' and how did you measure success?',
+        riley:  'At '+company+', what does your automation suite look like and where are the biggest gaps?',
+        jordan: 'Tell me about a challenging bug you caught at '+company+'. How did you find it?',
+        casey:  'What types of systems do you test at '+company+' and how do you validate correctness?'
+      };
+      return intermediatePersonalized[iv.id] || intermediateQ[iv.id];
+    }
+    return intermediateQ[iv.id] || 'Walk me through how you approach testing a complex feature.';
   }
-  if(iv.id==='jordan'){
-    return 'Tell me about a time you caught a critical bug at '+company+' right before release. What happened?';
+
+  // ADVANCED - architecture, leadership, metrics
+  if(level === 'advanced'){
+    var advancedQ = {
+      alex:   'Tell me about a time you built or completely redesigned a test strategy for a large system. What drove the decisions?',
+      morgan: hasFix
+        ? 'Walk me through the complete FIX message flow at '+company+'. What specific tag values do you validate at each stage and what edge cases do you test?'
+        : 'Walk me through the most technically complex system you have tested at '+company+'. How did you design coverage for it?',
+      sam:    'Tell me about the biggest quality improvement you drove at '+company+'. What was the before state, what did you change, and how did you quantify the impact?',
+      riley:  hasFix
+        ? 'FIX tag 35, ExecType 150, OrdStatus 39. Give me the full value map and tell me which combinations you test for and why. Clock is running.'
+        : 'Your regression suite has 500 tests and takes 3 hours to run. What is your strategy to cut that to 30 minutes without losing coverage?',
+      jordan: 'Tell me about a time you had to influence engineering leadership to invest in quality when they were pushing to ship faster. What was your argument and what was the outcome?',
+      casey:  hasFix
+        ? 'Walk me through the complete trade lifecycle at '+company+' from order entry to execution report. What FIX messages do you validate at each step and what does failure look like?'
+        : 'Describe how you built a test strategy for a financial system with no existing test coverage. What was your approach and what were the tradeoffs?'
+    };
+    return advancedQ[iv.id] || 'Tell me about the most technically complex testing challenge you have faced and how you solved it.';
   }
-  if(iv.id==='casey'){
-    if(domain.toLowerCase().indexOf('fix')!==-1||domain.toLowerCase().indexOf('trading')!==-1)
-      return 'Walk me through the trade lifecycle from order entry to execution confirmation as you test it at '+company+'.';
-    return 'What financial instruments have you tested at '+company+' and how did you validate their pricing?';
+
+  // PRO - strategy, org impact, executive level
+  if(level === 'pro'){
+    var proQ = {
+      alex:   'You are inheriting a QA organization of 15 engineers across 6 product teams with no shared standards and 60 percent test flakiness. What is your 90-day plan and what does success look like at day 90?',
+      morgan: 'Your engineering VP tells you the team is spending 40 percent of sprint time on test maintenance. You have one quarter to fix it. What is your diagnosis process and your solution?',
+      sam:    'You have a $500k annual budget to improve quality across an organization of 8 product teams. Walk me through exactly how you allocate it and how you measure ROI after 12 months.',
+      riley:  'You need to build a quality program for a new algorithmic trading platform from scratch. Latency is under 10 microseconds. Regulatory compliance is required. You have 6 months. Where do you start?',
+      jordan: 'Tell me about a time you changed the quality culture of an organization, not just a team. What specific behaviors did you change, how did you measure the change, and what was the business outcome?',
+      casey:  'Your firm is evaluating whether to buy an enterprise test platform for 2 million dollars a year or build one internally. Walk me through exactly how you make that decision and what factors drive it.'
+    };
+    return proQ[iv.id] || 'You have been brought in to lead quality for an organization that has never had a senior QA leader. Where do you start and how do you measure success in your first 90 days?';
   }
-  if(iv.id==='sam'){
-    return 'Tell me about the biggest quality improvement you drove at '+company+' and how you measured its impact.';
-  }
-  return 'Tell me about your work at '+company+'. What are you most proud of?';
+
+  return iv.quote;
 }
 
 // ======================================
